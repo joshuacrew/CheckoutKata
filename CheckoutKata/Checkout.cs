@@ -1,40 +1,34 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CheckoutKata
 {
     public class Checkout
     {
-        private readonly List<string> basket;
-        private static readonly Dictionary<string, decimal> priceDirectory = new Dictionary<string, decimal>
-        {
-            {"A99", 0.50m},
-            {"B15", 0.30m},
-            {"C40", 0.60m}
-        };
-
+        private readonly Dictionary<string, int> basket;
+        
         public Checkout()
         {
-            basket = new List<string>();
+            basket = new Dictionary<string, int>();
         }
 
         public void Scan(IEnumerable<string> items)
         {
-            foreach (var item in items)
+            foreach (var sku in items)
             {
-                basket.Add(item);
+                if (basket.ContainsKey(sku))
+                {
+                    basket[sku] += 1;
+                }
+                else
+                {
+                    basket.Add(sku, 1);
+                }
             }
         }
 
         public decimal GetTotalPrice()
         {
-            decimal totalPrice = 0;
-            foreach (var item in basket)
-            {
-                priceDirectory.TryGetValue(item, out var price);
-                totalPrice += price;
-            }
-            return totalPrice;
+            return Calculator.CalculatePrice(basket);
         }
     }
 }

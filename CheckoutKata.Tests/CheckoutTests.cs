@@ -19,13 +19,26 @@ namespace CheckoutKata.Tests
         }
 
         [TestCase(new [] {"A99", "A99"}, 1)]
-        [TestCase(new[] { "B15", "B15" }, 0.60)]
         [TestCase(new[] { "C40", "C40" }, 1.20)]
         [TestCase(new[] { "A99", "C40" }, 1.10)]
         public void ShouldReturnCorrectPriceForMultipleItems(string[] items, double expectedPrice)
         {
             var checkout = new Checkout();
             
+            checkout.Scan(items);
+
+            var totalPrice = checkout.GetTotalPrice();
+
+            Assert.AreEqual(expectedPrice, totalPrice);
+        }
+
+        [TestCase(new[] { "A99", "A99", "A99" }, 1.30)]
+        [TestCase(new[] { "B15", "B15" }, 0.45)]
+        [TestCase(new[] { "A99", "A99", "A99", "B15", "B15", "A99", "A99", "B15", }, 3.05)]
+        public void ShouldReturnCorrectPriceForMultipleOfferItems(string[] items, double expectedPrice)
+        {
+            var checkout = new Checkout();
+
             checkout.Scan(items);
 
             var totalPrice = checkout.GetTotalPrice();
