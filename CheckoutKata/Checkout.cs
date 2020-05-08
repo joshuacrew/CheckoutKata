@@ -4,13 +4,8 @@ namespace CheckoutKata
 {
     public class Checkout
     {
-        private readonly Dictionary<string, int> basket;
+        private readonly Dictionary<string, int> basket = new Dictionary<string, int>();
         
-        public Checkout()
-        {
-            basket = new Dictionary<string, int>();
-        }
-
         public void Scan(IEnumerable<string> items)
         {
             foreach (var sku in items)
