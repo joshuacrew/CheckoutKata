@@ -18,15 +18,23 @@ namespace CheckoutKata
             basket = new List<string>();
         }
 
-        public void Scan(Item item)
+        public void Scan(IEnumerable<string> items)
         {
-            basket.Add(item.Sku);
+            foreach (var item in items)
+            {
+                basket.Add(item);
+            }
         }
 
         public decimal GetTotalPrice()
         {
-            priceDirectory.TryGetValue(basket.First(), out var price);
-            return price;
+            decimal totalPrice = 0;
+            foreach (var item in basket)
+            {
+                priceDirectory.TryGetValue(item, out var price);
+                totalPrice += price;
+            }
+            return totalPrice;
         }
     }
 }
