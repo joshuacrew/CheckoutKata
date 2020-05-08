@@ -4,17 +4,19 @@ namespace CheckoutKata.Tests
 {
     public class CheckoutTests
     {
-        [Test]
-        public void ShouldReturnCorrectPriceForIndividualItem()
+        [TestCase("A99", 0.50)]
+        [TestCase("B15", 0.30)]
+        [TestCase("C40", 0.60)]
+        public void ShouldReturnCorrectPriceForIndividualItem(string sku, double expectedPrice)
         {
             var checkout = new Checkout();
-            var item = new Item("A99");
+            var item = new Item(sku);
 
             checkout.Scan(item);
 
             var totalPrice = checkout.GetTotalPrice();
 
-            Assert.AreEqual(0.50, totalPrice);
+            Assert.AreEqual(expectedPrice, totalPrice);
         }
     }
 }
